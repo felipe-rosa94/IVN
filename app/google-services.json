@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "270904270390",
+    "firebase_url": "https://igreja-vida-nova.firebaseio.com",
+    "project_id": "igreja-vida-nova",
+    "storage_bucket": "igreja-vida-nova.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270904270390:android:8f707bb41ecb7af6",
+        "android_client_info": {
+          "package_name": "com.devtech.ivn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270904270390-dj9rg5kfkpmovl6tfmgniltf69bb2s4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devtech.ivn",
+            "certificate_hash": "7b5700aba3f59c7f40546877b915b8a8d4583d10"
+          }
+        },
+        {
+          "client_id": "270904270390-k14bohr81fmseb6cvcbeuqvf0hui20b6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3vbhXmo6nPRt6a7bBYovBJQ9P1q9lego"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270904270390-k14bohr81fmseb6cvcbeuqvf0hui20b6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

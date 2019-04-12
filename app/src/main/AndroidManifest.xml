@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.devtech.ivn"
+    android:versionCode="103"
+    android:versionName="1.03">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Activitys.Home"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activitys.AgendaAc"
+            android:label="@string/title_activity_agenda"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.PergunteAc"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.AniversariantesAc"
+            android:label="@string/title_activity_aniversariantes"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.CadastraNiver"
+            android:label="@string/title_activity_cadastra_niver"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.DardosAc"
+            android:label="@string/title_activity_dardos"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.MusicaAc"
+            android:label="@string/title_activity_musica"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activitys.Player" />
+
+        <service android:name=".Util.Servicos" />
+        <service android:name=".Util.MyFirebaseInstance">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".Activitys.Politicas"
+            android:label="@string/title_activity_politicas"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.PlayerWeb"
+            android:label="@string/title_activity_player_web"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activitys.AvisoAc"
+            android:label="@string/title_activity_aviso"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>
