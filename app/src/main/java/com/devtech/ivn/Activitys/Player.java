@@ -22,17 +22,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.devtech.ivn.R;
+import com.devtech.ivn.Util.NotificationReceiver;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.Random;
 
 import wseemann.media.FFmpegMediaMetadataRetriever;
 
@@ -56,6 +56,9 @@ public class Player extends AppCompatActivity {
     private int totalTime;
     private int position;
     private static Activity activity;
+    private NotificationManager manager;
+    private String nome;
+    private String descricao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,11 @@ public class Player extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        manager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+
         iniciar();
+        //Teste();
 
         btnPlayPause.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -74,8 +81,52 @@ public class Player extends AppCompatActivity {
                     if (!mp.isPlaying()) {
                         mp.start();
                         finalizar();
+
+                        Intent playIntent = new Intent(getBaseContext(), NotificationReceiver.class);
+                        PendingIntent playPause = PendingIntent.getBroadcast(getBaseContext(), 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            CharSequence name = "Vida Nova";
+                            String desc = "notification";
+                            int imp = NotificationManager.IMPORTANCE_HIGH;
+                            final String ChannelID = "channel01";
+                            NotificationChannel mChannel = new NotificationChannel(ChannelID, name, imp);
+                            mChannel.setDescription(desc);
+                            mChannel.setLightColor(Color.CYAN);
+                            mChannel.canShowBadge();
+                            mChannel.setShowBadge(true);
+                            nm.createNotificationChannel(mChannel);
+
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), ChannelID);
+                            builder.setOngoing(true)
+                                    .setDefaults(Notification.DEFAULT_ALL)
+                                    .setWhen(System.currentTimeMillis())
+                                    .setSmallIcon(R.drawable.ic_play_circle_outline_black_24dp)
+                                    .setColor(Color.GREEN)
+                                    .setContentTitle("Reproduzindo ...")
+                                    .setContentText(nome)
+                                    .addAction(R.drawable.ic_play_arrow_black_24dp, "Play", playPause)
+                                    .addAction(R.drawable.ic_pause_black_24dp, "Pause", playPause);
+                            nm.notify(1, builder.build());
+
+                        } else {
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "com.devtech.ivn.notification");
+                            builder.setOngoing(true)
+                                    .setDefaults(Notification.DEFAULT_ALL)
+                                    .setWhen(System.currentTimeMillis())
+                                    .setSmallIcon(R.drawable.ic_play_circle_outline_black_24dp)
+                                    .setColor(Color.GREEN)
+                                    .setContentTitle("Reproduzindo ...")
+                                    .setContentText(nome)
+                                    .addAction(R.drawable.ic_play_arrow_black_24dp, "Play", playPause)
+                                    .addAction(R.drawable.ic_pause_black_24dp, "Pause", playPause);
+                            manager.notify(1, builder.build());
+                        }
                     }
                 } else {
+                    manager.cancelAll();
                     btnPlayPause.setBackgroundDrawable(Player.this.getResources().getDrawable(R.drawable.ic_play_circle_outline_black_24dp));
                     mp.pause();
                 }
@@ -148,25 +199,12 @@ public class Player extends AppCompatActivity {
     }
 
     private void iniciar() {
-        btnPlayPause = findViewById(R.id.btn_play_pause);
-        elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel);
-        remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
-        imMusic = findViewById(R.id.im_music_player);
-        btnVoltar = findViewById(R.id.btn_voltar_music);
-        btnProximo = findViewById(R.id.btn_proximo_music);
-        volumeBar = findViewById(R.id.volumeBar);
-        tvNome = findViewById(R.id.tv_nome_music);
-        tvDescricao = findViewById(R.id.tv_descricao_music);
-        positionBar = findViewById(R.id.positionBar);
-        positionBar.setMax(totalTime);
-        activity = Player.this;
-
         try {
             position = (int) getIntent().getIntExtra("position", 0);
             String urlSom = musicas.get(position).getUrlSom();
             String urlImagem = musicas.get(position).getUrlImagem();
-            String nome = musicas.get(position).getNome();
-            String descricao = musicas.get(position).getDescricao();
+            nome = musicas.get(position).getNome();
+            descricao = musicas.get(position).getDescricao();
 
             if (urlSom.contains("http://")) {
                 player(urlSom);
@@ -174,29 +212,43 @@ public class Player extends AppCompatActivity {
                 player("http://" + urlSom);
             }
 
+            btnPlayPause = findViewById(R.id.btn_play_pause);
+            elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel);
+            remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
+            imMusic = findViewById(R.id.im_music_player);
+            btnVoltar = findViewById(R.id.btn_voltar_music);
+            btnProximo = findViewById(R.id.btn_proximo_music);
+            volumeBar = findViewById(R.id.volumeBar);
+            tvNome = findViewById(R.id.tv_nome_music);
+            tvDescricao = findViewById(R.id.tv_descricao_music);
+            positionBar = findViewById(R.id.positionBar);
+            positionBar.setMax(totalTime);
+            activity = Player.this;
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (mp != null) {
+                        try {
+                            Message msg = new Message();
+                            msg.what = mp.getCurrentPosition();
+                            handler.sendMessage(msg);
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                }
+            }).start();
+
             if (!urlImagem.equals("")) {
                 Picasso.with(getBaseContext()).load(urlImagem).into(imMusic);
             }
+
             tvNome.setText(nome);
             tvDescricao.setText(descricao);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (mp != null) {
-                    try {
-                        Message msg = new Message();
-                        msg.what = mp.getCurrentPosition();
-                        handler.sendMessage(msg);
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                    }
-                }
-            }
-        }).start();
     }
 
     @SuppressLint("HandlerLeak")
@@ -211,6 +263,14 @@ public class Player extends AppCompatActivity {
             remainingTimeLabel.setText("- " + remainingTime);
         }
     };
+
+    public static void playPause() {
+        if (mp.isPlaying()) {
+            mp.pause();
+        } else {
+            mp.start();
+        }
+    }
 
     private void player(String urlSom) {
         try {
@@ -231,7 +291,7 @@ public class Player extends AppCompatActivity {
         try {
             mp.stop();
             activity.finish();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -254,6 +314,7 @@ public class Player extends AppCompatActivity {
         return timeLabel;
     }
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -274,6 +335,13 @@ public class Player extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        manager.cancelAll();
+        mp.stop();
     }
 
     @Override

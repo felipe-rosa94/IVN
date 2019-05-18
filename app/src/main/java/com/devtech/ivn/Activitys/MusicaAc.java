@@ -43,6 +43,7 @@ public class MusicaAc extends AppCompatActivity {
 
     public static boolean TOCANDO = false;
     public static int MATA = 0;
+    private String nome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +75,12 @@ public class MusicaAc extends AppCompatActivity {
         super.onStart();
         if (TOCANDO) {
             layoutTocando.setVisibility(View.VISIBLE);
-            tvNome.setText((String) getIntent().getStringExtra("nome"));
+            nome = (String) getIntent().getStringExtra("nome");
+            tvNome.setText(nome);
         } else {
             layoutTocando.setVisibility(View.GONE);
         }
+
         layoutTocando.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +125,7 @@ public class MusicaAc extends AppCompatActivity {
                 if (TOCANDO){
                     Intent it = new Intent(getBaseContext(), Home.class);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    it.putExtra("nome", nome);
                     startActivity(it);
                     finish();
                     MATA = 100;
@@ -143,6 +147,7 @@ public class MusicaAc extends AppCompatActivity {
                 if (TOCANDO){
                     Intent it = new Intent(getBaseContext(), Home.class);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    it.putExtra("nome", nome);
                     startActivity(it);
                     finish();
                     MATA = 100;

@@ -42,7 +42,7 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         final Dardos d = dardos.get(position);
 
         u = new Util(context);
@@ -82,7 +82,8 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
             @Override
             public void onClick(View v) {
                 try {
-                    u.download(d.getUrl(), d.getNomeArquivo(), d.getTitulo() + "\n" + d.getDescricao(), activity);
+                    u.Compartilhar(activity, position);
+                    //u.download(d.getUrl(), d.getNomeArquivo(), d.getTitulo() + "\n" + d.getDescricao(), activity);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

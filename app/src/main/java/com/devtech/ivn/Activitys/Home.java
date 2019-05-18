@@ -2,10 +2,13 @@ package com.devtech.ivn.Activitys;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-
+import com.devtech.ivn.Bancos.DBConfig;
 import com.devtech.ivn.Model.Aviso;
 import com.devtech.ivn.R;
 import com.devtech.ivn.Util.Servicos;
@@ -26,8 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import static com.devtech.ivn.Activitys.AgendaAc.getEventos;
 import static com.devtech.ivn.Activitys.MusicaAc.MATA;
+import static com.devtech.ivn.Activitys.MusicaAc.TOCANDO;
 import static com.devtech.ivn.Activitys.Player.finalizarPlayer;
 
 public class Home extends AppCompatActivity {
@@ -44,21 +48,26 @@ public class Home extends AppCompatActivity {
     private int heigth;
     private int cont = 0;
     public static String KEY;
+    public static String ID_PERGUNTA;
+    private String nome;
 
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mAgenda = mDatabase.child("Avisos");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         iniciar();
+
         btnIvn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Uri uri = Uri.parse("http://www.ividanova.com.br/");
-                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                    Intent it = new Intent(getBaseContext(), Web.class);
+                    it.putExtra("url", "http://www.ividanova.com.br/");
+                    it.putExtra("titulo", "Vida Nova");
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(it);
                 } catch (Exception e) {
@@ -71,8 +80,9 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Uri uri = Uri.parse("http://www.jovensvidanova.com.br/");
-                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                    Intent it = new Intent(getBaseContext(), Web.class);
+                    it.putExtra("url", "http://www.jovensvidanova.com.br/");
+                    it.putExtra("titulo", "Juventude Vida Nova");
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(it);
                 } catch (Exception e) {
@@ -124,35 +134,23 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent it = new Intent(getBaseContext(), PlayerWeb.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
+                    if (TOCANDO) {
+                        finish();
+                        Intent it = new Intent(getBaseContext(), MusicaAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        it.putExtra("nome", nome);
+                        it.putExtra("tocando", true);
+                        startActivity(it);
+                    } else {
+                        Intent it = new Intent(getBaseContext(), MusicaAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
-        btnLouvor.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                try {
-                    Intent it = new Intent(getBaseContext(), MusicaAc.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-
-
-        try {
-            getEventos();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         permissoes();
 
@@ -169,6 +167,24 @@ public class Home extends AppCompatActivity {
     }
 
     private void iniciar() {
+        try {
+            Util u = new Util(getBaseContext());
+            DBConfig db = new DBConfig(getBaseContext());
+
+            db.open();
+            if (db.Fields.IdPg.equals("")) {
+                db.Fields.IdPg = u.key();
+                db.update(1);
+                db.close();
+            }
+
+            ID_PERGUNTA = db.Fields.IdPg;
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         btnIvn = findViewById(R.id.btn_ivn);
         btnJvn = findViewById(R.id.btn_jvn);
         btnAgenda = findViewById(R.id.btn_agenda);
@@ -184,6 +200,8 @@ public class Home extends AppCompatActivity {
                 startActivity(it);
             }
         });
+
+        nome = (String) getIntent().getStringExtra("nome");
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -210,7 +228,7 @@ public class Home extends AppCompatActivity {
                                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     it.putExtra("titulo", e.getTitulo());
                                     it.putExtra("msg", e.getMsg());
-                                    it.putExtra("imagem",e.getUrlImagem());
+                                    it.putExtra("imagem", e.getUrlImagem());
                                     startActivity(it);
                                 } else {
                                     MsgAvisos(e.getTitulo(), e.getMsg(), e.getUrlImagem());
@@ -265,14 +283,6 @@ public class Home extends AppCompatActivity {
     public void screen() {
         width = getBaseContext().getResources().getDisplayMetrics().widthPixels;
         heigth = (int) (width * 0.66666666666666666666666666666667);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (MATA == 100) {
-            finalizarPlayer();
-        }
     }
 }
 

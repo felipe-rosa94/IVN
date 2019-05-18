@@ -3,22 +3,32 @@ package com.devtech.ivn.Util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.devtech.ivn.Activitys.Home;
+import com.devtech.ivn.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.nio.channels.FileChannel;
 import java.text.DateFormat;
@@ -160,6 +170,38 @@ public class Util {
         return retorno;
     }
 
+    public void Compartilhar(Context context, int position) {
+
+        try {
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/jpeg");
+            share.setType("image/jpg");
+            share.setType("image/png");
+            share.setType("text/plain");
+
+            share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            //share.putExtra(Intent.EXTRA_TEXT, "teste");
+
+            final int[] photos = {
+                    R.drawable.dardos1,
+                    R.drawable.dardos2,
+                    R.drawable.dardos3,
+            };
+
+            Uri imageUri = null;
+            try {
+                imageUri = Uri.parse(MediaStore.Images.Media.insertImage(context.getContentResolver(), BitmapFactory.decodeResource(context.getResources(), photos[position]), null, null));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            share.putExtra(Intent.EXTRA_STREAM, imageUri);
+            context.startActivity(Intent.createChooser(share, "Selecione"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(context, "teste", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void sharedImage(String nomeArquivo, String texto, Context context) {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/jpeg");
@@ -170,7 +212,7 @@ public class Util {
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_TEXT, texto);
 
-        Uri imageUri = Uri.parse("/storage/emulated/0/Download/" + nomeArquivo);
+        Uri imageUri = Uri.parse("sdcard/dardos/" + nomeArquivo);
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
         context.startActivity(Intent.createChooser(share, "Selecione"));
     }
@@ -187,11 +229,20 @@ public class Util {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, File file) {
+                try {
 
-                String FileName = url.substring(url.lastIndexOf('/') + 1, url.length());
-                File DestFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), FileName);
-                Copiando(file, DestFile, nomeArquivo, texto, context);
-                progress.dismiss();
+                    File folder = new File("sdcard/dardos");
+                    if (!folder.exists()) {
+                        folder.mkdir();
+                    }
+
+                    String FileName = url.substring(url.lastIndexOf('/') + 1, url.length());
+                    File DestFile = new File(folder, FileName);
+                    Copiando(file, DestFile, nomeArquivo, texto, context);
+                    progress.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -199,9 +250,11 @@ public class Util {
     public void Copiando(File src, File dst, String nomeArquivo, String texto, Context context) {
         Toast.makeText(context, "Carregando...", Toast.LENGTH_SHORT).show();
         try {
+
             FileChannel inChannel = new FileInputStream(src).getChannel();
             FileChannel outChannel = new FileOutputStream(dst).getChannel();
             String arquivo = String.valueOf(dst);
+
             try {
                 inChannel.transferTo(0, inChannel.size(), outChannel);
                 outChannel.force(true);
@@ -215,5 +268,4 @@ public class Util {
             sharedImage(nomeArquivo, texto, context);
         }
     }
-
 }

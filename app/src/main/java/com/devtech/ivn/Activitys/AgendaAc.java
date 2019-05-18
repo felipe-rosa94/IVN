@@ -10,11 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.devtech.ivn.Adapter.AdapterAgenda;
 import com.devtech.ivn.Model.Agenda;
-import com.devtech.ivn.Model.Dardos;
 import com.devtech.ivn.R;
 import com.devtech.ivn.Util.Util;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class AgendaAc extends AppCompatActivity {
     private RecyclerView rvAgenda;
     private TextView tvTitle;
 
-    private static ArrayList<Agenda> agendas;
+    private ArrayList<Agenda> agendas;
 
     private AdapterAgenda adapterAgenda;
 
@@ -45,14 +44,14 @@ public class AgendaAc extends AppCompatActivity {
     private static DatabaseReference mAgenda = mDatabase.child("Eventos");
 
     private Util u;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
         iniciar();
-        filtraMes();
-        //--CadastrarEvento();--//
+        getEventos();
     }
 
     private void iniciar() {
@@ -65,6 +64,7 @@ public class AgendaAc extends AppCompatActivity {
 
         tvTitle = findViewById(R.id.tv_title_agenda);
         tvTitle.setText(u.mesPorExtenso());
+        progressBar = findViewById(R.id.progressBar_agenda);
 
         adapterAgenda = new AdapterAgenda(getBaseContext(), agendas);
         rvAgenda = findViewById(R.id.rv_agenda);
@@ -74,7 +74,7 @@ public class AgendaAc extends AppCompatActivity {
         cvAdicioneAniversarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try { 
+                try {
                     Intent it = new Intent(getBaseContext(), CadastraNiver.class);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(it);
@@ -92,7 +92,7 @@ public class AgendaAc extends AppCompatActivity {
                     Intent it = new Intent(getBaseContext(), AniversariantesAc.class);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(it);
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -124,7 +124,7 @@ public class AgendaAc extends AppCompatActivity {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 
-    public static void getEventos() {
+    public void getEventos() {
         mAgenda.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -143,6 +143,12 @@ public class AgendaAc extends AppCompatActivity {
                         return p1.getId() - p2.getId();
                     }
                 });
+                try {
+                    filtraMes();
+                    progressBar.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

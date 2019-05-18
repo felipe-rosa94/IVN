@@ -1,0 +1,33 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_id"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="3dp">
+
+
+    <ImageView
+        android:id="@+id/icone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_library_music_black_24dp" />
+
+    <ProgressBar
+        android:id="@+id/barraDeProgresso"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icone" />
+
+    <TextView
+        android:id="@+id/textoDeProgresso"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/barraDeProgresso"
+        android:layout_toRightOf="@+id/icone" />
+
+
+</RelativeLayout>
+

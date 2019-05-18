@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.devtech.ivn.Activitys.Home.ID_PERGUNTA;
+
 public class Servicos extends Service {
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -69,9 +71,7 @@ public class Servicos extends Service {
     }
 
     private void getPerguntas() {
-        dbConfig.open();
-        DatabaseReference mPergunte = mDatabase.child("Pergunte/" + dbConfig.Fields.IdPg);
-        dbConfig.close();
+        DatabaseReference mPergunte = mDatabase.child("Pergunte/" + ID_PERGUNTA);
         mPergunte.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -67,12 +67,24 @@ public class DardosAc extends AppCompatActivity {
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mDardos = mDatabase.child("Dardos");
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dardos);
         iniciar();
-        getDardos();
+
+        dardos = new ArrayList<>();
+        dardos.clear();
+
+        dardos.add(new Dardos("1","http://www.ividanova.com.br/images/dardos1","","",""));
+        dardos.add(new Dardos("2","http://www.ividanova.com.br/images/dardos2","","",""));
+        dardos.add(new Dardos("3","http://www.ividanova.com.br/images/dardos3","","",""));
+
+        adapterDardos = new AdapterDardos(getBaseContext(), dardos, activity);
+        rvDardos.setAdapter(adapterDardos);
+        progressBar.setVisibility(View.GONE);
+
         permissao(this);
     }
 

@@ -38,8 +38,6 @@ public class AvisoAc extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        permissao(AvisoAc.this);
-
         u = new Util(getBaseContext());
 
         final String url = (String) getIntent().getStringExtra("imagem");
@@ -63,6 +61,7 @@ public class AvisoAc extends AppCompatActivity {
         layout_compartilha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                permissao(AvisoAc.this);
                 u.download(url, nomeArquivo, "", AvisoAc.this);
             }
         });
