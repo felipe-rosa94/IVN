@@ -51,7 +51,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activitys.Player" />
 
-        <service android:name=".Util.Servicos" />
         <service android:name=".Util.MyFirebaseInstance">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -69,9 +68,20 @@
         <activity
             android:name=".Activitys.AvisoAc"
             android:label="@string/title_activity_aviso"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <receiver android:name=".Util.NotificationReceiver"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <receiver android:name=".Util.NotificationReceiver" />
+
+        <activity
+            android:name=".Activitys.PlayerVideos"
+            android:label="@string/title_activity_player_videos"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Activitys.VideoAc"
+            android:label="@string/title_activity_video"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

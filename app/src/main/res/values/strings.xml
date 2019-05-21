@@ -11,4 +11,6 @@
     <string name="title_activity_politicas">Politicas</string>
     <string name="title_activity_player_web">PlayerWeb</string>
     <string name="title_activity_aviso">Aviso</string>
+    <string name="title_activity_player_videos">PlayerVideos</string>
+    <string name="title_activity_video">VideoAc</string>
 </resources>

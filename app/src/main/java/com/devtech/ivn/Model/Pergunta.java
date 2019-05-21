@@ -6,15 +6,17 @@ public class Pergunta {
     private String msg;
     private String tipo;
     private boolean respondida;
+    private String token;
 
     public Pergunta() {
     }
 
-    public Pergunta(String id, String msg, String tipo, boolean respondida) {
+    public Pergunta(String id, String msg, String tipo, boolean respondida, String token) {
         this.id = id;
         this.msg = msg;
         this.tipo = tipo;
         this.respondida = respondida;
+        this.token = token;
     }
 
     public String getId() {
@@ -47,5 +49,13 @@ public class Pergunta {
 
     public void setRespondida(boolean respondida) {
         this.respondida = respondida;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

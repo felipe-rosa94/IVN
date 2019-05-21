@@ -83,7 +83,7 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
             public void onClick(View v) {
                 try {
                     u.Compartilhar(activity, position);
-                    //u.download(d.getUrl(), d.getNomeArquivo(), d.getTitulo() + "\n" + d.getDescricao(), activity);
+                    //u.download(d.getLink(), d.getNomeArquivo(), d.getTitulo() + "\n" + d.getDescricao(), activity);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -7,34 +7,44 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.devtech.ivn.Adapter.AdapterNiver;
 import com.devtech.ivn.Adapter.AdapterPergunte;
 import com.devtech.ivn.Bancos.DBConfig;
-import com.devtech.ivn.Model.Membros;
+import com.devtech.ivn.Model.Admin;
+import com.devtech.ivn.Model.notification;
 import com.devtech.ivn.Model.Pergunta;
+import com.devtech.ivn.Model.Push;
 import com.devtech.ivn.R;
 import com.devtech.ivn.Util.Util;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-import static com.devtech.ivn.Util.Servicos.ENVIA;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
+
+import static com.devtech.ivn.Activitys.Home.ENVIA;
 
 public class PergunteAc extends AppCompatActivity {
 
@@ -53,6 +63,9 @@ public class PergunteAc extends AppCompatActivity {
 
     private ArrayList<Pergunta> perguntas;
 
+    private String TOKEN;
+    private String TOKEN_ADMIN;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +78,8 @@ public class PergunteAc extends AppCompatActivity {
         dbConfig = new DBConfig(getBaseContext());
         gravaId();
         getPerguntas();
+        getToken();
+        getTokenAdmin();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,7 +100,7 @@ public class PergunteAc extends AppCompatActivity {
                     return;
                 }
                 dbConfig.open();
-                if (!dbConfig.Fields.BkpConversa.equals("")){
+                if (!dbConfig.Fields.BkpConversa.equals("")) {
                     envia();
                     try {
                         JSONArray array = new JSONArray(dbConfig.Fields.BkpConversa);
@@ -116,10 +131,12 @@ public class PergunteAc extends AppCompatActivity {
         p.setId(u.key());
         p.setMsg(etMsg.getText().toString());
         p.setTipo("pergunta");
+        p.setToken(TOKEN);
         dbConfig.open();
         mDatabase.child("Pergunte/" + dbConfig.Fields.IdPg).child(p.getId()).setValue(p);
         dbConfig.close();
         etMsg.setText("");
+        enviarNotificacao();
     }
 
     private void gravaId() {
@@ -135,6 +152,59 @@ public class PergunteAc extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void enviarNotificacao() {
+        try {
+            Push p = new Push();
+            p.setTo(TOKEN_ADMIN);
+            notification n = new notification();
+            n.setTitle("Pergunte aos pastores");
+            n.setBody("Existem novas perguntas");
+            p.setNotification(n);
+            String push = new Gson().toJson(p);
+
+            //String json = "{\"to\":\"fpFlOLK7FOo:APA91bHPKDqO0n7Bw_hA9OjmxFiKh3ki5Dt6_gZXKMUV36_qe109csudtp9ylDGe7tzFUzo15HwWrLVjlUWwxF_qGdG0tgGNTiDyZWFaXrKQJx2b98AG1a_Gw92nNOLCirmQZ9ceMqnE\", \"notification\":{\"title\":\"Pergunte aos pastores\", \"body\":\"Existem novas perguntas\"}}";
+
+            ByteArrayEntity entity = new ByteArrayEntity(push.getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            final AsyncHttpClient client = new AsyncHttpClient(true, 80, 443);
+            client.addHeader("content-type", "application/json");
+            client.addHeader("authorization", "key=AAAAPxMnHjY:APA91bF80R0S-X7xZlFz_JVeNEm3hY4Pt2lfZRJg-y5N5s5ZIh5TykAvu3FMHwVAcfRm1ztvPY5XQqVHSm9p-hctY-UTGmjwbhC6bu9RHeJ9aaUuCTvNULUyoLSySvyp2kuIzMisvre0");
+            client.post(getBaseContext(), "https://fcm.googleapis.com/fcm/send", entity, "application/json", new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(PergunteAc.this, "erro " + responseString, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    Toast.makeText(PergunteAc.this, responseString, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getTokenAdmin(){
+        DatabaseReference dbRef = mDatabase.child("Admin");
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    Admin a = dataSnapshot1.getValue(Admin.class);
+                    if (a.getUsuario().equals("Felipe")){
+                        TOKEN_ADMIN = a.getToken();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getPerguntas() {
@@ -165,7 +235,7 @@ public class PergunteAc extends AppCompatActivity {
                     }
                 }
 
-                if (!dbConfig.Fields.BkpConversa.equals("") && !new Gson().toJson(perguntas).equals("[]")){
+                if (!dbConfig.Fields.BkpConversa.equals("") && !new Gson().toJson(perguntas).equals("[]")) {
                     dbConfig.Fields.BkpConversa = new Gson().toJson(perguntas);
                     dbConfig.update(1);
                 }
@@ -198,6 +268,20 @@ public class PergunteAc extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void getToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        TOKEN = task.getResult().getToken();
+                    }
+                });
     }
 
     @Override

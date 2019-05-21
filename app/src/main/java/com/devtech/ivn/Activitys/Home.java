@@ -2,13 +2,8 @@ package com.devtech.ivn.Activitys;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +16,6 @@ import android.widget.Toast;
 import com.devtech.ivn.Bancos.DBConfig;
 import com.devtech.ivn.Model.Aviso;
 import com.devtech.ivn.R;
-import com.devtech.ivn.Util.Servicos;
 import com.devtech.ivn.Util.Util;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,9 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import static com.devtech.ivn.Activitys.MusicaAc.MATA;
 import static com.devtech.ivn.Activitys.MusicaAc.TOCANDO;
-import static com.devtech.ivn.Activitys.Player.finalizarPlayer;
 
 public class Home extends AppCompatActivity {
 
@@ -42,6 +34,7 @@ public class Home extends AppCompatActivity {
     private ImageView btnLouvor;
     private ImageView btnPergunta;
     private ImageView btnDardos;
+    private ImageView btnVideoKids;
     private TextView tvPoliticas;
     private AlertDialog dialog;
     private int width;
@@ -50,116 +43,128 @@ public class Home extends AppCompatActivity {
     public static String KEY;
     public static String ID_PERGUNTA;
     private String nome;
+    public static boolean ENVIA = false;
 
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mAgenda = mDatabase.child("Avisos");
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        iniciar();
-
-        btnIvn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent it = new Intent(getBaseContext(), Web.class);
-                    it.putExtra("url", "http://www.ividanova.com.br/");
-                    it.putExtra("titulo", "Vida Nova");
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnJvn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent it = new Intent(getBaseContext(), Web.class);
-                    it.putExtra("url", "http://www.jovensvidanova.com.br/");
-                    it.putExtra("titulo", "Juventude Vida Nova");
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnAgenda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent it = new Intent(getBaseContext(), AgendaAc.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnPergunta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent it = new Intent(getBaseContext(), PergunteAc.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnDardos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent it = new Intent(getBaseContext(), DardosAc.class);
-                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(it);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnLouvor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (TOCANDO) {
-                        finish();
-                        Intent it = new Intent(getBaseContext(), MusicaAc.class);
-                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        it.putExtra("nome", nome);
-                        it.putExtra("tocando", true);
-                        startActivity(it);
-                    } else {
-                        Intent it = new Intent(getBaseContext(), MusicaAc.class);
-                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(it);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        permissoes();
-
         try {
-            getAvisos();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_home);
+            iniciar();
+            btnIvn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), Web.class);
+                        it.putExtra("url", "http://www.ividanova.com.br/");
+                        it.putExtra("titulo", "Vida Nova");
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
+            btnJvn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), Web.class);
+                        it.putExtra("url", "http://www.jovensvidanova.com.br/");
+                        it.putExtra("titulo", "Juventude Vida Nova");
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            btnAgenda.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), AgendaAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            btnPergunta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), PergunteAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            btnDardos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), DardosAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            btnLouvor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if (TOCANDO) {
+                            finish();
+                            Intent it = new Intent(getBaseContext(), MusicaAc.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            it.putExtra("nome", nome);
+                            it.putExtra("tocando", true);
+                            startActivity(it);
+                        } else {
+                            Intent it = new Intent(getBaseContext(), MusicaAc.class);
+                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(it);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            btnVideoKids.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), VideoAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            permissoes();
+            getAvisos();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void permissoes() {
@@ -190,6 +195,7 @@ public class Home extends AppCompatActivity {
         btnAgenda = findViewById(R.id.btn_agenda);
         btnLouvor = findViewById(R.id.btn_louvor);
         btnPergunta = findViewById(R.id.btn_pergunta);
+        btnVideoKids = findViewById(R.id.btn_video_kds);
         btnDardos = findViewById(R.id.btn_dardos);
         tvPoliticas = findViewById(R.id.tv_politicas);
         tvPoliticas.setOnClickListener(new View.OnClickListener() {
@@ -202,16 +208,6 @@ public class Home extends AppCompatActivity {
         });
 
         nome = (String) getIntent().getStringExtra("nome");
-
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(Home.this, Servicos.class));
-            } else {
-                startService(new Intent(Home.this, Servicos.class));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void getAvisos() {

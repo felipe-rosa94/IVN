@@ -22,7 +22,6 @@ public class Web extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
         android.webkit.WebView webView = findViewById(R.id.web_player);
 
         String url = getIntent().getStringExtra("url");

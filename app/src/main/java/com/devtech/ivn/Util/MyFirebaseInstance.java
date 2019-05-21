@@ -25,14 +25,14 @@ public class MyFirebaseInstance extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String s) {
-        Log.e("NEW_TOKEN", s);
+        Log.i("NEW_TOKEN", s);
     }
 
     private void showNotification(String title, String body) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANEL_ID = "com.devtech.ivn.notification";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANEL_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANEL_ID, "notification", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("Vida Nova");
             channel.enableLights(true);
             channel.setLightColor(Color.BLUE);
