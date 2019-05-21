@@ -45,20 +45,16 @@ public class Player extends AppCompatActivity {
     private ToggleButton btnPlayPause;
     private ImageView btnVoltar;
     private ImageView btnProximo;
-    private ImageView imMusic;
-    private TextView tvNome;
-    private TextView tvDescricao;
     private SeekBar positionBar;
     private SeekBar volumeBar;
     private TextView elapsedTimeLabel;
     private TextView remainingTimeLabel;
-    private static MediaPlayer mp;
+    public static MediaPlayer mp;
     private int totalTime;
     private int position;
     private static Activity activity;
-    private NotificationManager manager;
+    public static NotificationManager manager;
     private String nome;
-    private String descricao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +62,8 @@ public class Player extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         manager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-
         iniciar();
-        //Teste();
-
         btnPlayPause.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -204,7 +195,7 @@ public class Player extends AppCompatActivity {
             String urlSom = musicas.get(position).getUrlSom();
             String urlImagem = musicas.get(position).getUrlImagem();
             nome = musicas.get(position).getNome();
-            descricao = musicas.get(position).getDescricao();
+            String descricao = musicas.get(position).getDescricao();
 
             if (urlSom.contains("http://")) {
                 player(urlSom);
@@ -215,12 +206,12 @@ public class Player extends AppCompatActivity {
             btnPlayPause = findViewById(R.id.btn_play_pause);
             elapsedTimeLabel = findViewById(R.id.elapsedTimeLabel);
             remainingTimeLabel = findViewById(R.id.remainingTimeLabel);
-            imMusic = findViewById(R.id.im_music_player);
+            ImageView imMusic = findViewById(R.id.im_music_player);
             btnVoltar = findViewById(R.id.btn_voltar_music);
             btnProximo = findViewById(R.id.btn_proximo_music);
             volumeBar = findViewById(R.id.volumeBar);
-            tvNome = findViewById(R.id.tv_nome_music);
-            tvDescricao = findViewById(R.id.tv_descricao_music);
+            TextView tvNome = findViewById(R.id.tv_nome_music);
+            TextView tvDescricao = findViewById(R.id.tv_descricao_music);
             positionBar = findViewById(R.id.positionBar);
             positionBar.setMax(totalTime);
             activity = Player.this;

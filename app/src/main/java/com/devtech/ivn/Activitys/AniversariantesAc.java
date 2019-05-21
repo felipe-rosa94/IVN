@@ -31,11 +31,9 @@ public class AniversariantesAc extends AppCompatActivity {
     private static RecyclerView rvNiver;
     private static ArrayList<Membros> membros;
     public static ArrayList<Membros> todosMembros;
-    private TextView tvTitle;
     private static AdapterNiver adapterNiver;
     private static Util u;
     private static ProgressBar progressBar;
-
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mAgenda = mDatabase.child("Membros");
 
@@ -53,12 +51,9 @@ public class AniversariantesAc extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         progressBar = findViewById(R.id.progressBar_niver);
-
-        tvTitle = findViewById(R.id.tv_titulo_aniversario);
+        TextView tvTitle = findViewById(R.id.tv_titulo_aniversario);
         tvTitle.setText("Aniversariantes do mês de " + u.mesPorExtenso1(u.mes()));
-
         rvNiver = findViewById(R.id.rv_niver);
         rvNiver.setLayoutManager(new LinearLayoutManager(this));
     }

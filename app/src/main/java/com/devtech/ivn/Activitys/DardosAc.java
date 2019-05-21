@@ -56,17 +56,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class DardosAc extends AppCompatActivity {
 
-    private ArrayList<Dardos> dardos;
-    private AdapterDardos adapterDardos;
     private RecyclerView rvDardos;
-    private Toolbar toolbar;
     private ProgressBar progressBar;
-    private static Context context;
     private Activity activity;
-
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mDardos = mDatabase.child("Dardos");
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +68,12 @@ public class DardosAc extends AppCompatActivity {
         setContentView(R.layout.activity_dardos);
         iniciar();
 
-        dardos = new ArrayList<>();
-        dardos.clear();
-
+        ArrayList<Dardos> dardos = new ArrayList<>();
         dardos.add(new Dardos("1","http://www.ividanova.com.br/images/dardos1","","",""));
         dardos.add(new Dardos("2","http://www.ividanova.com.br/images/dardos2","","",""));
         dardos.add(new Dardos("3","http://www.ividanova.com.br/images/dardos3","","",""));
 
-        adapterDardos = new AdapterDardos(getBaseContext(), dardos, activity);
+        AdapterDardos adapterDardos = new AdapterDardos(getBaseContext(), dardos, activity);
         rvDardos.setAdapter(adapterDardos);
         progressBar.setVisibility(View.GONE);
 
@@ -89,16 +81,13 @@ public class DardosAc extends AppCompatActivity {
     }
 
     private void iniciar() {
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         rvDardos = findViewById(R.id.rv_dardo);
         rvDardos.setLayoutManager(new LinearLayoutManager(this));
         progressBar = findViewById(R.id.progressBar_dardos);
-
-        context = getBaseContext();
         activity = DardosAc.this;
     }
 
@@ -127,32 +116,6 @@ public class DardosAc extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void getDardos() {
-        mDardos.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dardos = new ArrayList<>();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    try {
-                        Dardos e = dataSnapshot1.getValue(Dardos.class);
-                        dardos.add(e);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                Collections.reverse(dardos);
-                adapterDardos = new AdapterDardos(getBaseContext(), dardos, activity);
-                rvDardos.setAdapter(adapterDardos);
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override

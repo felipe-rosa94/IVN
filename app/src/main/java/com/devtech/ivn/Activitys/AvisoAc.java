@@ -21,12 +21,7 @@ import com.squareup.picasso.Picasso;
 
 public class AvisoAc extends AppCompatActivity {
 
-    private CardView cvAviso;
-    private ImageView imAviso;
-    private ImageView btnFecha;
-    private ConstraintLayout layout_compartilha;
     private Util u;
-
     private String nomeArquivo;
 
     @Override
@@ -41,15 +36,12 @@ public class AvisoAc extends AppCompatActivity {
         u = new Util(getBaseContext());
 
         final String url = (String) getIntent().getStringExtra("imagem");
-        String titulo = (String) getIntent().getStringExtra("titulo");
-        String msg = (String) getIntent().getStringExtra("msg");
 
         nomeArquivo = url;
         nomeArquivo = nomeArquivo.substring(url.lastIndexOf("/") + 1, nomeArquivo.length());
 
-        imAviso = findViewById(R.id.im_aviso_grande);
-        cvAviso = findViewById(R.id.cv_aviso);
-        btnFecha = findViewById(R.id.btn_fecha_aviso);
+        ImageView imAviso = findViewById(R.id.im_aviso_grande);
+        ImageView btnFecha = findViewById(R.id.btn_fecha_aviso);
         btnFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +49,7 @@ public class AvisoAc extends AppCompatActivity {
             }
         });
 
-        layout_compartilha = findViewById(R.id.layout_compartilha_aviso);
+        ConstraintLayout layout_compartilha = findViewById(R.id.layout_compartilha_aviso);
         layout_compartilha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

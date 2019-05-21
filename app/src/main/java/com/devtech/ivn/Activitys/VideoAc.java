@@ -1,6 +1,5 @@
 package com.devtech.ivn.Activitys;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,6 @@ public class VideoAc extends AppCompatActivity {
     private ArrayList<Video> videos;
     private AdapterVideos adapterVideos;
     private ProgressBar progressBar;
-    private Toolbar toolbar;
 
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mVideos = mDatabase.child("Videos");
@@ -42,7 +40,7 @@ public class VideoAc extends AppCompatActivity {
     }
 
     private void iniciar() {
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

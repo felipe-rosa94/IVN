@@ -53,7 +53,6 @@ public class PergunteAc extends AppCompatActivity {
     private Toolbar toolbar;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mPerguntas;
 
     private EditText etMsg;
     private ImageView btnEnvia;
@@ -121,7 +120,11 @@ public class PergunteAc extends AppCompatActivity {
 
                 dbConfig.close();
                 ENVIA = false;
-                ((LinearLayoutManager) rvPerguntas.getLayoutManager()).scrollToPositionWithOffset(perguntas.size() + 1, 0);
+                try {
+                    ((LinearLayoutManager) rvPerguntas.getLayoutManager()).scrollToPositionWithOffset(perguntas.size() + 1, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -164,8 +167,6 @@ public class PergunteAc extends AppCompatActivity {
             p.setNotification(n);
             String push = new Gson().toJson(p);
 
-            //String json = "{\"to\":\"fpFlOLK7FOo:APA91bHPKDqO0n7Bw_hA9OjmxFiKh3ki5Dt6_gZXKMUV36_qe109csudtp9ylDGe7tzFUzo15HwWrLVjlUWwxF_qGdG0tgGNTiDyZWFaXrKQJx2b98AG1a_Gw92nNOLCirmQZ9ceMqnE\", \"notification\":{\"title\":\"Pergunte aos pastores\", \"body\":\"Existem novas perguntas\"}}";
-
             ByteArrayEntity entity = new ByteArrayEntity(push.getBytes("UTF-8"));
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
             final AsyncHttpClient client = new AsyncHttpClient(true, 80, 443);
@@ -174,12 +175,12 @@ public class PergunteAc extends AppCompatActivity {
             client.post(getBaseContext(), "https://fcm.googleapis.com/fcm/send", entity, "application/json", new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Toast.makeText(PergunteAc.this, "erro " + responseString, Toast.LENGTH_SHORT).show();
+
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                    Toast.makeText(PergunteAc.this, responseString, Toast.LENGTH_SHORT).show();
+
                 }
             });
         } catch (Exception e) {
@@ -187,14 +188,14 @@ public class PergunteAc extends AppCompatActivity {
         }
     }
 
-    private void getTokenAdmin(){
+    private void getTokenAdmin() {
         DatabaseReference dbRef = mDatabase.child("Admin");
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Admin a = dataSnapshot1.getValue(Admin.class);
-                    if (a.getUsuario().equals("Felipe")){
+                    if (a.getUsuario().equals("Felipe")) {
                         TOKEN_ADMIN = a.getToken();
                     }
                 }
@@ -260,6 +261,11 @@ public class PergunteAc extends AppCompatActivity {
                 rvPerguntas.setAdapter(adapterPergunte);
                 if (perguntas.size() != 0) {
                     cvDescricao.setVisibility(View.GONE);
+                }
+                try {
+                    ((LinearLayoutManager) rvPerguntas.getLayoutManager()).scrollToPositionWithOffset(perguntas.size(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

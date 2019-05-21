@@ -22,10 +22,8 @@ import static com.devtech.ivn.Activitys.AniversariantesAc.todosMembros;
 
 public class CadastraNiver extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private EditText etNome;
     private EditText etData;
-    private Button btnGravar;
     private Util u;
 
     @Override
@@ -37,24 +35,21 @@ public class CadastraNiver extends AppCompatActivity {
     }
 
     private void iniciar() {
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         u = new Util(getBaseContext());
-
         etNome = findViewById(R.id.et_nome_niver);
         etData = findViewById(R.id.et_data_niver);
-        btnGravar = findViewById(R.id.btn_gravar_niver);
+        Button btnGravar = findViewById(R.id.btn_gravar_niver);
         btnGravar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gravar();
             }
         });
-
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NN/NN/NNNN");
         MaskTextWatcher mtw = new MaskTextWatcher(etData, smf);
         etData.addTextChangedListener(mtw);

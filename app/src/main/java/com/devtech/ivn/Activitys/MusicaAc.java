@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 public class MusicaAc extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private RecyclerView rvMusicas;
     public static ArrayList<Musica> musicas;
     private ProgressBar progressBar;
@@ -54,7 +53,7 @@ public class MusicaAc extends AppCompatActivity {
     }
 
     private void iniciar() {
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

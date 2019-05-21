@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import static com.devtech.ivn.Activitys.MusicaAc.TOCANDO;
+import static com.devtech.ivn.Activitys.Player.manager;
+import static com.devtech.ivn.Activitys.Player.mp;
 
 public class Home extends AppCompatActivity {
 
@@ -35,8 +37,6 @@ public class Home extends AppCompatActivity {
     private ImageView btnPergunta;
     private ImageView btnDardos;
     private ImageView btnVideoKids;
-    private TextView tvPoliticas;
-    private AlertDialog dialog;
     private int width;
     private int heigth;
     private int cont = 0;
@@ -197,11 +197,13 @@ public class Home extends AppCompatActivity {
         btnPergunta = findViewById(R.id.btn_pergunta);
         btnVideoKids = findViewById(R.id.btn_video_kds);
         btnDardos = findViewById(R.id.btn_dardos);
-        tvPoliticas = findViewById(R.id.tv_politicas);
+        TextView tvPoliticas = findViewById(R.id.tv_politicas);
         tvPoliticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(getBaseContext(), Politicas.class);
+                Intent it = new Intent(getBaseContext(), Web.class);
+                it.putExtra("url", "file:///android_asset/politicas.html");
+                it.putExtra("titulo", "Políticas de privacidade");
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(it);
             }
@@ -272,13 +274,20 @@ public class Home extends AppCompatActivity {
             Picasso.with(getBaseContext()).load(urlImagem).resize(width, heigth).centerCrop().into(imView);
         }
         builder.setView(view);
-        dialog = builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
     }
 
     public void screen() {
         width = getBaseContext().getResources().getDisplayMetrics().widthPixels;
         heigth = (int) (width * 0.66666666666666666666666666666667);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        manager.cancelAll();
+        mp.stop();
     }
 }
 

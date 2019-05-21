@@ -30,19 +30,11 @@ import java.util.Comparator;
 
 public class AgendaAc extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private ImageView cvAniversariantes;
-    private ImageView cvAdicioneAniversarios;
     private RecyclerView rvAgenda;
-    private TextView tvTitle;
-
     private ArrayList<Agenda> agendas;
-
     private AdapterAgenda adapterAgenda;
-
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mAgenda = mDatabase.child("Eventos");
-
     private Util u;
     private ProgressBar progressBar;
 
@@ -57,12 +49,12 @@ public class AgendaAc extends AppCompatActivity {
     private void iniciar() {
         u = new Util(getBaseContext());
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        tvTitle = findViewById(R.id.tv_title_agenda);
+        TextView tvTitle = findViewById(R.id.tv_title_agenda);
         tvTitle.setText(u.mesPorExtenso());
         progressBar = findViewById(R.id.progressBar_agenda);
 
@@ -70,7 +62,7 @@ public class AgendaAc extends AppCompatActivity {
         rvAgenda = findViewById(R.id.rv_agenda);
         rvAgenda.setLayoutManager(new LinearLayoutManager(this));
 
-        cvAdicioneAniversarios = findViewById(R.id.add_aniversariantes);
+        ImageView cvAdicioneAniversarios = findViewById(R.id.add_aniversariantes);
         cvAdicioneAniversarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +75,7 @@ public class AgendaAc extends AppCompatActivity {
                 }
             }
         });
-        cvAniversariantes = findViewById(R.id.aniversariantes);
+        ImageView cvAniversariantes = findViewById(R.id.aniversariantes);
 
         cvAniversariantes.setOnClickListener(new View.OnClickListener() {
             @Override

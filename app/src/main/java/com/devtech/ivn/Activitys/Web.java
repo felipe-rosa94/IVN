@@ -11,8 +11,6 @@ import com.devtech.ivn.R;
 
 public class Web extends AppCompatActivity {
 
-    private TextView tvTitulo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,20 +19,15 @@ public class Web extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         android.webkit.WebView webView = findViewById(R.id.web_player);
-
         String url = getIntent().getStringExtra("url");
         String titulo = getIntent().getStringExtra("titulo");
-
-        tvTitulo = findViewById(R.id.tv_web);
+        TextView tvTitulo = findViewById(R.id.tv_web);
         tvTitulo.setText(titulo);
-
         webView.loadUrl(url);
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
