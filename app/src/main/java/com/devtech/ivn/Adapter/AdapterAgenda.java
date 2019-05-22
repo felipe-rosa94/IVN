@@ -62,6 +62,9 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
             } else if (a.getTipo().equals("atitude")) {
                 holder.imLogo.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                 holder.cabecalho.setBackgroundColor(Color.parseColor("#ffeb3b"));
+            } else if (a.getTipo().equals("cantina")) {
+                holder.imLogo.setImageResource(R.drawable.ic_restaurant_black_24dp);
+                holder.cabecalho.setBackgroundColor(Color.parseColor("#D61C1C"));
             } else if (a.getTipo().equals("jvn")) {
                 holder.imLogo.setImageResource(R.drawable.jvn_e);
                 holder.cabecalho.setBackgroundColor(Color.parseColor("#000000"));

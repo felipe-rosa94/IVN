@@ -13,4 +13,6 @@
     <string name="title_activity_aviso">Aviso</string>
     <string name="title_activity_player_videos">PlayerVideos</string>
     <string name="title_activity_video">VideoAc</string>
+    <string name="title_activity_pedidos">PedidosAc</string>
+    <string name="title_activity_cadastra_pedido">CadastraPedido</string>
 </resources>

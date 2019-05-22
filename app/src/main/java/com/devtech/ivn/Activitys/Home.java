@@ -3,6 +3,8 @@ package com.devtech.ivn.Activitys;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -37,6 +39,7 @@ public class Home extends AppCompatActivity {
     private ImageView btnPergunta;
     private ImageView btnDardos;
     private ImageView btnVideoKids;
+    private ImageView btnPedidos;
     private int width;
     private int heigth;
     private int cont = 0;
@@ -159,6 +162,18 @@ public class Home extends AppCompatActivity {
                 }
             });
 
+            btnPedidos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent it = new Intent(getBaseContext(), PedidosAc.class);
+                        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
             permissoes();
             getAvisos();
 
@@ -197,6 +212,16 @@ public class Home extends AppCompatActivity {
         btnPergunta = findViewById(R.id.btn_pergunta);
         btnVideoKids = findViewById(R.id.btn_video_kds);
         btnDardos = findViewById(R.id.btn_dardos);
+        btnPedidos = findViewById(R.id.btn_pedidos);
+
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(Home.this.getPackageName(), 0);
+            TextView tvVersao = findViewById(R.id.tv_versao);
+            tvVersao.setText("Versão: " + packageInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         TextView tvPoliticas = findViewById(R.id.tv_politicas);
         tvPoliticas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,8 +311,12 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        manager.cancelAll();
-        mp.stop();
+        try {
+            manager.cancelAll();
+            mp.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

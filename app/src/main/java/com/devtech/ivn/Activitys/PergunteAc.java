@@ -195,7 +195,7 @@ public class PergunteAc extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Admin a = dataSnapshot1.getValue(Admin.class);
-                    if (a.getUsuario().equals("Felipe")) {
+                    if (a.getUsuario().equals("James")) {
                         TOKEN_ADMIN = a.getToken();
                     }
                 }
