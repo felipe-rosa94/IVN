@@ -7,16 +7,18 @@ public class Musica {
     private String descricao;
     private String urlSom;
     private String urlImagem;
+    private long duration;
 
     public Musica() {
     }
 
-    public Musica(String id, String nome, String descricao, String urlSom, String urlImagem) {
+    public Musica(String id, String nome, String descricao, String urlSom, String urlImagem, long duration) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.urlSom = urlSom;
         this.urlImagem = urlImagem;
+        this.duration = duration;
     }
 
     public String getId() {
@@ -57,5 +59,13 @@ public class Musica {
 
     public void setUrlImagem(String urlImagem) {
         this.urlImagem = urlImagem;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 }

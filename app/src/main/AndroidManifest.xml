@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.devtech.ivn"
-    android:versionCode="110"
-    android:versionName="1.10">
+    android:versionCode="116"
+    android:versionName="1.16">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -50,13 +50,6 @@
             android:label="@string/title_activity_musica"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activitys.Player" />
-
-        <service android:name=".Util.MyFirebaseInstance">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".Activitys.Web"
             android:label="@string/title_activity_player_web"
@@ -65,9 +58,6 @@
             android:name=".Activitys.AvisoAc"
             android:label="@string/title_activity_aviso"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <receiver android:name=".Util.NotificationReceiver" />
-
         <activity
             android:name=".Activitys.PlayerVideos"
             android:label="@string/title_activity_player_videos"
@@ -84,7 +74,14 @@
         <activity
             android:name=".Activitys.CadastraPedido"
             android:label="@string/title_activity_cadastra_pedido"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".Util.MyFirebaseInstance">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".Util.NotificationReceiver" />
     </application>
 
 </manifest>

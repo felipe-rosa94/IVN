@@ -69,9 +69,13 @@ public class DardosAc extends AppCompatActivity {
         iniciar();
 
         ArrayList<Dardos> dardos = new ArrayList<>();
-        dardos.add(new Dardos("1","http://www.ividanova.com.br/images/dardos1","","",""));
-        dardos.add(new Dardos("2","http://www.ividanova.com.br/images/dardos2","","",""));
-        dardos.add(new Dardos("3","http://www.ividanova.com.br/images/dardos3","","",""));
+        dardos.add(new Dardos("1", "http://www.ividanova.com.br/images/dardos1", "", "", "", 480, 720));
+        dardos.add(new Dardos("2", "http://www.ividanova.com.br/images/dardos2", "", "", "", 480, 720));
+        dardos.add(new Dardos("3", "http://www.ividanova.com.br/images/dardos3", "", "", "", 480, 720));
+        dardos.add(new Dardos("4", "http://www.ividanova.com.br/images/dardos4", "", "", "", 720, 720));
+        dardos.add(new Dardos("5", "http://www.ividanova.com.br/images/dardos5", "", "", "", 720, 520));
+        dardos.add(new Dardos("6", "http://www.ividanova.com.br/images/dardos6", "", "", "", 480, 720));
+        dardos.add(new Dardos("7", "http://www.ividanova.com.br/images/dardos7", "", "", "", 480, 720));
 
         AdapterDardos adapterDardos = new AdapterDardos(getBaseContext(), dardos, activity);
         rvDardos.setAdapter(adapterDardos);

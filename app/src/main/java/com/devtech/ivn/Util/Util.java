@@ -9,30 +9,23 @@ import android.net.wifi.WifiManager;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
-import com.devtech.ivn.Activitys.Home;
 import com.devtech.ivn.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
-
-import org.apache.commons.net.ntp.NTPUDPClient;
-import org.apache.commons.net.ntp.TimeInfo;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.nio.channels.FileChannel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 
 public class Util {
-
 
     private static Context ctx;
     private WifiManager wifi;
@@ -47,25 +40,7 @@ public class Util {
 
     }
 
-    public void dataHora() {
-        Runnable thread = new Runnable() {
-            public void run() {
-                try {
-                    String TIME_SERVER = "time-a.nist.gov";
-                    NTPUDPClient timeClient = new NTPUDPClient();
-                    InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
-                    TimeInfo timeInfo = timeClient.getTime(inetAddress);
-                    long returnTime = timeInfo.getMessage().getTransmitTimeStamp().getTime();
-                    Date time = new Date(returnTime);
-                    String data[] = time.toString().split(" ");
-                    Home.KEY = data[5] + mes() + data[2] + data[3].replace(":", "");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        new Thread(thread).start();
-    }
+
 
     public String key() {
         Random random = new Random();
@@ -179,6 +154,10 @@ public class Util {
                     R.drawable.dardos1,
                     R.drawable.dardos2,
                     R.drawable.dardos3,
+                    R.drawable.dardos4,
+                    R.drawable.dardos5,
+                    R.drawable.dardos6,
+                    R.drawable.dardos7,
             };
 
             Uri imageUri = null;

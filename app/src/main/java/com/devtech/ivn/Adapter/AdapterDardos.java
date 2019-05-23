@@ -2,6 +2,7 @@ package com.devtech.ivn.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.devtech.ivn.Model.Dardos;
@@ -16,6 +18,7 @@ import com.devtech.ivn.R;
 import com.devtech.ivn.Util.Util;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -73,10 +76,13 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
         }
 
         try {
-            Picasso.with(context).load(d.getUrl()).resize(width, heigth).centerCrop().into(holder.imDardos);
+            Picasso.with(context).load(d.getUrl()).into(holder.imDardos);
+            //Picasso.with(context).load(d.getUrl()).resize(d.getWidth(), d.getHeight()).centerCrop().into(holder.imDardos);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        holder.progressBar.setVisibility(View.GONE);
 
         holder.compartilhar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +108,7 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
         private TextView tvTitulo;
         private TextView tvDescricao;
         private ConstraintLayout compartilhar;
+        private ProgressBar progressBar;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -109,6 +116,7 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
             tvDescricao = itemView.findViewById(R.id.tv_descricao_dardos);
             tvTitulo = itemView.findViewById(R.id.tv_titulo_dardos);
             compartilhar = itemView.findViewById(R.id.layout_compartilhar);
+            progressBar = itemView.findViewById(R.id.progressBar2);
         }
     }
 
