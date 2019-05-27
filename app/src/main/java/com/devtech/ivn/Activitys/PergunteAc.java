@@ -50,7 +50,6 @@ public class PergunteAc extends AppCompatActivity {
 
     private DBConfig dbConfig;
     private Util u;
-    private Toolbar toolbar;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -80,7 +79,7 @@ public class PergunteAc extends AppCompatActivity {
         getToken();
         getTokenAdmin();
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

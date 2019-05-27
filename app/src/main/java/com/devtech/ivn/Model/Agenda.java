@@ -10,11 +10,13 @@ public class Agenda {
     private String anoMes;
     private String anoMesDia;
     private String data;
+    private String urlImagem;
+    private String color;
 
     public Agenda() {
     }
 
-    public Agenda(int id, String key, String titulo, String descricao, String tipo, String anoMes, String anoMesDia, String data) {
+    public Agenda(int id, String key, String titulo, String descricao, String tipo, String anoMes, String anoMesDia, String data, String urlImagem, String color) {
         this.id = id;
         this.key = key;
         this.titulo = titulo;
@@ -23,6 +25,7 @@ public class Agenda {
         this.anoMes = anoMes;
         this.anoMesDia = anoMesDia;
         this.data = data;
+        this.urlImagem = urlImagem;
     }
 
     public int getId() {
@@ -108,5 +111,21 @@ public class Agenda {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getUrlImagem() {
+        return urlImagem;
+    }
+
+    public void setUrlImagem(String urlImagem) {
+        this.urlImagem = urlImagem;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

@@ -47,7 +47,11 @@ public class CadastraNiver extends AppCompatActivity {
         btnGravar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gravar();
+                try {
+                    gravar();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         SimpleMaskFormatter smf = new SimpleMaskFormatter("NN/NN/NNNN");

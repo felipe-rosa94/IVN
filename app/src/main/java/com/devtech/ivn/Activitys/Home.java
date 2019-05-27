@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.devtech.ivn.Bancos.DBConfig;
 import com.devtech.ivn.Model.Aviso;
+import com.devtech.ivn.Model.Manutencao;
 import com.devtech.ivn.R;
 import com.devtech.ivn.Util.Util;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +51,7 @@ public class Home extends AppCompatActivity {
 
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mAgenda = mDatabase.child("Avisos");
+    private static DatabaseReference mManutencao = mDatabase.child("Manutencao");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,13 +171,18 @@ public class Home extends AppCompatActivity {
                         Intent it = new Intent(getBaseContext(), PedidosAc.class);
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(it);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
             permissoes();
             getAvisos();
+            try {
+                getManutencao();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -257,6 +264,33 @@ public class Home extends AppCompatActivity {
                                     MsgAvisos(e.getTitulo(), e.getMsg(), e.getUrlImagem());
                                 }
                                 cont++;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getManutencao() {
+        mManutencao.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    try {
+                        Manutencao m = dataSnapshot1.getValue(Manutencao.class);
+                        if (m.isAtivo()) {
+                            try {
+                                startActivity(new Intent(getBaseContext(), ManutencaoAC.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     } catch (Exception e) {
