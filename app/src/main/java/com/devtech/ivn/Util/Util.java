@@ -51,10 +51,10 @@ public class Util {
         return dateFormat.format(date) + "-" + String.valueOf(x);
     }
 
-    public String dia() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMd");
+    public int dia() {
+        DateFormat dateFormat = new SimpleDateFormat("dd");
         Date date = new Date();
-        return dateFormat.format(date);
+        return Integer.parseInt(dateFormat.format(date));
     }
 
     public String data() {

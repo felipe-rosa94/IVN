@@ -22,10 +22,12 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
 
     private Context context;
     private ArrayList<Agenda> agendas;
+    private int posicao;
 
-    public AdapterAgenda(Context context, ArrayList<Agenda> agendas) {
+    public AdapterAgenda(Context context, ArrayList<Agenda> agendas, int posicao) {
         this.context = context;
         this.agendas = agendas;
+        this.posicao = posicao;
     }
 
     @NonNull
@@ -44,6 +46,12 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
             holder.tvData.setText(a.getData());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (position == posicao){
+            holder.tvProximo.setTextColor(Color.RED);
+        } else {
+            holder.tvProximo.setTextColor(Color.WHITE);
         }
 
         try {
@@ -104,7 +112,7 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
         private CardView cvAgenda;
         private ConstraintLayout cabecalho;
         private ImageView imLogo;
-        private TextView tvTitulo, tvDescricao, tvData;
+        private TextView tvTitulo, tvDescricao, tvData, tvProximo;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +122,7 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
             tvTitulo = itemView.findViewById(R.id.tv_titulo_agenda);
             tvDescricao = itemView.findViewById(R.id.tv_descricao_agenda);
             tvData = itemView.findViewById(R.id.tv_data_agenda);
+            tvProximo = itemView.findViewById(R.id.tv_proximo_evento);
         }
     }
 }

@@ -59,9 +59,10 @@
                 style="@style/title_agenda"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Café Com Jesus"
+                app:layout_constraintEnd_toStartOf="@+id/textView21"
                 app:layout_constraintStart_toEndOf="@+id/im_logo_agenda"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,6 +94,18 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/im_logo_agenda"
                 app:layout_constraintTop_toBottomOf="@+id/tv_titulo_agenda" />
+
+            <TextView
+                android:id="@+id/tv_proximo_evento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="*"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_data_agenda"
+                app:layout_constraintEnd_toStartOf="@+id/cabecalho_agenda"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

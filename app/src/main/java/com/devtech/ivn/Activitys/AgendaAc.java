@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devtech.ivn.Adapter.AdapterAgenda;
 import com.devtech.ivn.Model.Agenda;
@@ -32,6 +33,7 @@ public class AgendaAc extends AppCompatActivity {
 
     private RecyclerView rvAgenda;
     private ArrayList<Agenda> agendas;
+    private ArrayList<Agenda> agendas2;
     private AdapterAgenda adapterAgenda;
     private static DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static DatabaseReference mAgenda = mDatabase.child("Eventos");
@@ -58,7 +60,7 @@ public class AgendaAc extends AppCompatActivity {
         tvTitle.setText(u.mesPorExtenso());
         progressBar = findViewById(R.id.progressBar_agenda);
 
-        adapterAgenda = new AdapterAgenda(getBaseContext(), agendas);
+        adapterAgenda = new AdapterAgenda(getBaseContext(), agendas, 0);
         rvAgenda = findViewById(R.id.rv_agenda);
         rvAgenda.setLayoutManager(new LinearLayoutManager(this));
 
@@ -92,10 +94,37 @@ public class AgendaAc extends AppCompatActivity {
 
     }
 
+    private int posicionaLista() {
+        int x = 0;
+        String[] dia;
+        boolean buscaProximo = true;
+        for (int i = 0; i < agendas2.size(); i++) {
+            if (agendas2.get(i).getData().equals(u.data())) {
+                ((LinearLayoutManager) rvAgenda.getLayoutManager()).scrollToPositionWithOffset(i, 0);
+                buscaProximo = false;
+                x = i;
+            }
+        }
+        if (buscaProximo) {
+            for (int i = 0; i < agendas2.size(); i++) {
+                dia = agendas2.get(i).getData().split("/");
+                x = (Integer.parseInt(dia[0]) - u.dia());
+                if (x > 0) {
+                    ((LinearLayoutManager) rvAgenda.getLayoutManager()).scrollToPositionWithOffset(i, 0);
+                    x = i;
+                    break;
+                }
+            }
+        }
+        return x;
+    }
+
     private void filtraMes() {
-        adapterAgenda = new AdapterAgenda(getBaseContext(), agendas);
         ArrayList<Agenda> filtarModoLista;
         filtarModoLista = Filtrar(agendas, u.anoMes());
+        agendas2 = new ArrayList<>();
+        agendas2 = filtarModoLista;
+        adapterAgenda = new AdapterAgenda(getBaseContext(), agendas, posicionaLista());
         adapterAgenda.Filtro(filtarModoLista);
         rvAgenda.setAdapter(adapterAgenda);
     }
