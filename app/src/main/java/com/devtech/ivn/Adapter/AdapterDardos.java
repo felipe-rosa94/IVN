@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.devtech.ivn.Model.Dardos;
 import com.devtech.ivn.R;
 import com.devtech.ivn.Util.Util;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         final Dardos d = dardos.get(position);
 
         u = new Util(context);
@@ -76,20 +77,26 @@ public class AdapterDardos extends RecyclerView.Adapter<AdapterDardos.MyViewHold
         }
 
         try {
-            Picasso.with(context).load(d.getUrl()).into(holder.imDardos);
-            //Picasso.with(context).load(d.getUrl()).resize(d.getWidth(), d.getHeight()).centerCrop().into(holder.imDardos);
+            Picasso.with(context).load(d.getUrl()).into(holder.imDardos, new Callback() {
+                @Override
+                public void onSuccess() {
+                    holder.progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        holder.progressBar.setVisibility(View.GONE);
 
         holder.compartilhar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     u.Compartilhar(activity, position);
-                    //u.download(d.getLink(), d.getNomeArquivo(), d.getTitulo() + "\n" + d.getDescricao(), activity);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

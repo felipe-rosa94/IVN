@@ -49,9 +49,9 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
         }
 
         if (position == posicao){
-            holder.tvProximo.setTextColor(Color.RED);
+            holder.imMarcador.setVisibility(View.VISIBLE);
         } else {
-            holder.tvProximo.setTextColor(Color.WHITE);
+            holder.imMarcador.setVisibility(View.GONE);
         }
 
         try {
@@ -111,8 +111,8 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
 
         private CardView cvAgenda;
         private ConstraintLayout cabecalho;
-        private ImageView imLogo;
-        private TextView tvTitulo, tvDescricao, tvData, tvProximo;
+        private ImageView imLogo, imMarcador;
+        private TextView tvTitulo, tvDescricao, tvData;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -122,7 +122,7 @@ public class AdapterAgenda extends RecyclerView.Adapter<AdapterAgenda.MyViewHold
             tvTitulo = itemView.findViewById(R.id.tv_titulo_agenda);
             tvDescricao = itemView.findViewById(R.id.tv_descricao_agenda);
             tvData = itemView.findViewById(R.id.tv_data_agenda);
-            tvProximo = itemView.findViewById(R.id.tv_proximo_evento);
+            imMarcador = itemView.findViewById(R.id.im_marcador);
         }
     }
 }

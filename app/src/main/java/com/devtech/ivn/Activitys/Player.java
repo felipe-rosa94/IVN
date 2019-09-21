@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -129,7 +130,15 @@ public class Player extends AppCompatActivity {
             btnVoltar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
+
+                    mp.stop();
+                    mp.release();
+                    position = ((position - 1) < 0) ? (musicas.size() - 1) : (position - 1);
+                    Uri u = Uri.parse(musicas.get(position).toString());
+                    mp = MediaPlayer.create(getBaseContext(), u);
+                    mp.start();
+
+                    /*try {
                         mp.stop();
                         Intent it = new Intent(getBaseContext(), Player.class);
                         if (position == 0) {
@@ -141,7 +150,7 @@ public class Player extends AppCompatActivity {
                         finish();
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
             });
 

@@ -29,13 +29,9 @@
                 android:id="@+id/cabecalho_agenda"
                 android:layout_width="10dp"
                 android:layout_height="0dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
                 android:background="#1565C0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/tv_titulo_agenda"
                 app:layout_constraintTop_toTopOf="parent">
 
             </android.support.constraint.ConstraintLayout>
@@ -62,7 +58,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="Café Com Jesus"
-                app:layout_constraintEnd_toStartOf="@+id/textView21"
+                app:layout_constraintEnd_toStartOf="@+id/im_marcador"
                 app:layout_constraintStart_toEndOf="@+id/im_logo_agenda"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,14 +66,12 @@
                 android:id="@+id/tv_descricao_agenda"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="2dp"
                 android:text="Sábado 07:30"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/im_marcador"
                 app:layout_constraintStart_toEndOf="@+id/im_logo_agenda"
                 app:layout_constraintTop_toBottomOf="@+id/tv_data_agenda" />
 
@@ -85,27 +79,21 @@
                 android:id="@+id/tv_data_agenda"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Data"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/im_marcador"
                 app:layout_constraintStart_toEndOf="@+id/im_logo_agenda"
                 app:layout_constraintTop_toBottomOf="@+id/tv_titulo_agenda" />
 
-            <TextView
-                android:id="@+id/tv_proximo_evento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="*"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_data_agenda"
+            <ImageView
+                android:id="@+id/im_marcador"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toStartOf="@+id/cabecalho_agenda"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/marcador" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

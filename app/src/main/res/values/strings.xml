@@ -16,4 +16,5 @@
     <string name="title_activity_pedidos">PedidosAc</string>
     <string name="title_activity_cadastra_pedido">CadastraPedido</string>
     <string name="title_activity_manutencao">Manutencao</string>
+    <string name="title_activity_new_player">NewPlayer</string>
 </resources>

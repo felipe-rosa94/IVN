@@ -69,6 +69,7 @@ public class DardosAc extends AppCompatActivity {
         iniciar();
 
         ArrayList<Dardos> dardos = new ArrayList<>();
+        dardos.add(new Dardos("8", "http://www.ividanova.com.br/images/dardos8", "", "", "", 480, 720));
         dardos.add(new Dardos("1", "http://www.ividanova.com.br/images/dardos1", "", "", "", 480, 720));
         dardos.add(new Dardos("2", "http://www.ividanova.com.br/images/dardos2", "", "", "", 480, 720));
         dardos.add(new Dardos("3", "http://www.ividanova.com.br/images/dardos3", "", "", "", 480, 720));

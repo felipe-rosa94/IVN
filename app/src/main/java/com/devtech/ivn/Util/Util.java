@@ -151,6 +151,7 @@ public class Util {
             //share.putExtra(Intent.EXTRA_TEXT, "teste");
 
             final int[] photos = {
+                    R.drawable.dardos8,
                     R.drawable.dardos1,
                     R.drawable.dardos2,
                     R.drawable.dardos3,
