@@ -1,6 +1,8 @@
 package com.devtech.ivn.Model;
 
-public class Musica {
+import java.io.Serializable;
+
+public class Musica implements Serializable {
 
     private String id;
     private String nome;

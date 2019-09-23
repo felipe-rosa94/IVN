@@ -55,10 +55,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_descricao_music">
+                app:layout_constraintTop_toBottomOf="@+id/tv_descricao_musica">
 
                 <SeekBar
-                    android:id="@+id/positionBar"
+                    android:id="@+id/seekBar_duracao"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -94,7 +94,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <ToggleButton
-                android:id="@+id/btn_play_pause"
+                android:id="@+id/btn_play_musica"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_marginBottom="8dp"
@@ -138,7 +138,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
-                    android:id="@+id/volumeBar"
+                    android:id="@+id/seekBar_volume"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -165,7 +165,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/btn_voltar_music"
+                android:id="@+id/btn_previous_musica"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="8dp"
@@ -175,14 +175,14 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-                app:layout_constraintEnd_toStartOf="@+id/btn_play_pause"
+                app:layout_constraintEnd_toStartOf="@+id/btn_play_musica"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
                 app:srcCompat="@drawable/ic_skip_previous_black_24dp"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
-                android:id="@+id/btn_proximo_music"
+                android:id="@+id/btn_next_musica"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="8dp"
@@ -193,13 +193,13 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_play_pause"
+                app:layout_constraintStart_toEndOf="@+id/btn_play_musica"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
                 app:srcCompat="@drawable/ic_skip_next_black_24dp"
                 tools:ignore="VectorDrawableCompat" />
 
             <TextView
-                android:id="@+id/tv_nome_music"
+                android:id="@+id/tv_nome_musica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -216,7 +216,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/im_music_player" />
 
             <TextView
-                android:id="@+id/tv_descricao_music"
+                android:id="@+id/tv_descricao_musica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -227,7 +227,7 @@
                 android:text="Descrição"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nome_music" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_nome_musica" />
 
         </android.support.constraint.ConstraintLayout>
 

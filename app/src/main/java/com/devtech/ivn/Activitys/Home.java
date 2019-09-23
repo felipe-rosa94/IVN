@@ -27,9 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import static com.devtech.ivn.Activitys.MusicaAc.TOCANDO;
-import static com.devtech.ivn.Activitys.Player.manager;
-import static com.devtech.ivn.Activitys.Player.mp;
+import static com.devtech.ivn.Activitys.MusicaAc.PLAYER;
+
+
 
 public class Home extends AppCompatActivity {
 
@@ -64,7 +64,7 @@ public class Home extends AppCompatActivity {
                 public void onClick(View v) {
                     try {
                         Intent it = new Intent(getBaseContext(), Web.class);
-                        it.putExtra("url", "http://www.ividanova.com.br/");
+                        it.putExtra("URL", "http://www.ividanova.com.br/");
                         it.putExtra("titulo", "Vida Nova");
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(it);
@@ -79,7 +79,7 @@ public class Home extends AppCompatActivity {
                 public void onClick(View v) {
                     try {
                         Intent it = new Intent(getBaseContext(), Web.class);
-                        it.putExtra("url", "http://www.jovensvidanova.com.br/");
+                        it.putExtra("URL", "http://www.jovensvidanova.com.br/");
                         it.putExtra("titulo", "Juventude Vida Nova");
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(it);
@@ -132,18 +132,17 @@ public class Home extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        if (TOCANDO) {
-                            finish();
-                            Intent it = new Intent(getBaseContext(), MusicaAc.class);
-                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            it.putExtra("nome", nome);
-                            it.putExtra("tocando", true);
-                            startActivity(it);
-                        } else {
-                            Intent it = new Intent(getBaseContext(), MusicaAc.class);
-                            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(it);
+                        Intent it = new Intent(getBaseContext(), MusicaAc.class);
+                        try {
+                            if (PLAYER.isPlaying()) {
+                                it.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                            } else {
+                                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                        startActivity(it);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -234,14 +233,14 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(getBaseContext(), Web.class);
-                it.putExtra("url", "file:///android_asset/politicas.html");
+                it.putExtra("URL", "file:///android_asset/politicas.html");
                 it.putExtra("titulo", "Políticas de privacidade");
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(it);
             }
         });
 
-        nome = (String) getIntent().getStringExtra("nome");
+        nome = (String) getIntent().getStringExtra("NOME");
     }
 
     public void getAvisos() {
@@ -340,17 +339,6 @@ public class Home extends AppCompatActivity {
     public void screen() {
         width = getBaseContext().getResources().getDisplayMetrics().widthPixels;
         heigth = (int) (width * 0.66666666666666666666666666666667);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            manager.cancelAll();
-            mp.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
 

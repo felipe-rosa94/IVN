@@ -11,14 +11,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devtech.ivn.Activitys.Player;
+import com.devtech.ivn.Activitys.NewPlayer;
+
 import com.devtech.ivn.Model.Musica;
 import com.devtech.ivn.R;
 
 import java.util.ArrayList;
 
-import static com.devtech.ivn.Activitys.MusicaAc.TOCANDO;
-import static com.devtech.ivn.Activitys.Player.finalizarPlayer;
 
 public class AdapterMusica extends RecyclerView.Adapter<AdapterMusica.MyViewHolder> {
 
@@ -52,13 +51,18 @@ public class AdapterMusica extends RecyclerView.Adapter<AdapterMusica.MyViewHold
             @Override
             public void onClick(View v) {
                 try {
-                    if (TOCANDO) {
-                        finalizarPlayer();
-                    }
                     Toast.makeText(context, "Carregando música ...", Toast.LENGTH_SHORT).show();
-                    Intent it = new Intent(context, Player.class);
+                    Intent it = new Intent(context, NewPlayer.class);
+
                     it.putExtra("position", position);
+                    it.putExtra("nome", m.getNome());
+                    it.putExtra("descricao", m.getDescricao());
+                    it.putExtra("duracao", m.getDuration());
+                    it.putExtra("url", m.getUrlSom());
+                    it.putExtra("capa", m.getUrlImagem());
+                    it.putExtra("musicas", musicas);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     context.startActivity(it);
                 } catch (Exception e) {
                     e.printStackTrace();

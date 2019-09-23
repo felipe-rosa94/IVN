@@ -22,7 +22,7 @@ public class Web extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
             WebView webView = findViewById(R.id.web_player);
-            String url = getIntent().getStringExtra("url");
+            String url = getIntent().getStringExtra("URL");
             String titulo = getIntent().getStringExtra("titulo");
             TextView tvTitulo = findViewById(R.id.tv_web);
             tvTitulo.setText(titulo);
