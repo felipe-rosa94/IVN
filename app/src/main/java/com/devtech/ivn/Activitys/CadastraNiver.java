@@ -87,7 +87,7 @@ public class CadastraNiver extends AppCompatActivity {
             }
 
             if (cadastrado) {
-                Toast.makeText(this, "Esse NOME já está cadastrado.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Esse nome já está cadastrado.", Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 Toast.makeText(this, "Cadastrado com sucesso.", Toast.LENGTH_SHORT).show();

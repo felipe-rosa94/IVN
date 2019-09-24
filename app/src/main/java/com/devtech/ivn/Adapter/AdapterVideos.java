@@ -46,7 +46,7 @@ public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.MyViewHold
             public void onClick(View v) {
                 Intent it = new Intent(context, PlayerVideos.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                it.putExtra("URL", vd.getLink());
+                it.putExtra("url", vd.getLink());
                 context.startActivity(it);
             }
         });

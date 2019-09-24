@@ -16,7 +16,7 @@ public class PlayerVideos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_videos);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        String url = (String) getIntent().getStringExtra("URL");
+        String url = (String) getIntent().getStringExtra("url");
         VideoView videoView = findViewById(R.id.videoView);
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);

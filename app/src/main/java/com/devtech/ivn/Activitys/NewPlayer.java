@@ -3,7 +3,10 @@ package com.devtech.ivn.Activitys;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -11,6 +14,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,12 +25,14 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.devtech.ivn.Model.Musica;
@@ -33,9 +40,14 @@ import com.devtech.ivn.R;
 import com.devtech.ivn.Util.NotificationBroadcast;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
+import static com.devtech.ivn.Activitys.App.CHANNEL_2_ID;
 import static com.devtech.ivn.Activitys.MusicaAc.PLAYER;
+import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
 
 
 public class NewPlayer extends AppCompatActivity {
@@ -47,7 +59,7 @@ public class NewPlayer extends AppCompatActivity {
     private static ImageView ivCapa;
     private static ToggleButton btnPlay;
 
-    public static String NOME, URL, DESCRICAO;
+    public static String nome, url, descricao;
     public static long duracao;
     public static int position;
 
@@ -72,16 +84,20 @@ public class NewPlayer extends AppCompatActivity {
 
         musicas = new ArrayList<>();
         urlImagem = getIntent().getStringExtra("capa");
-        URL = getIntent().getStringExtra("url");
-        NOME = getIntent().getStringExtra("nome");
+        url = getIntent().getStringExtra("url");
+        nome = getIntent().getStringExtra("nome");
         duracao = getIntent().getLongExtra("duracao", 0);
         position = getIntent().getIntExtra("position", 0);
-        DESCRICAO = getIntent().getStringExtra("descricao");
+        descricao = getIntent().getStringExtra("descricao");
         musicas = (ArrayList<Musica>) getIntent().getSerializableExtra("musicas");
         activity = NewPlayer.this;
 
         notificationManager = NotificationManagerCompat.from(this);
         mediaSession = new MediaSessionCompat(this, "tag");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.registerReceiver(new NotificationBroadcast(), new IntentFilter("android.intent.action.PHONE_STATE"));
+        }
 
         iniciar();
     }
@@ -97,7 +113,7 @@ public class NewPlayer extends AppCompatActivity {
         btnPrevious = findViewById(R.id.btn_previous_musica);
         btnPlay = findViewById(R.id.btn_play_musica);
         btnNext = findViewById(R.id.btn_next_musica);
-        player(URL, (int) duracao, NOME, DESCRICAO);
+        player(url, (int) duracao, nome, descricao);
 
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         seekBarVolume.setMax(15);
@@ -273,10 +289,10 @@ public class NewPlayer extends AppCompatActivity {
             icone = R.drawable.ic_play_circle;
         }
 
-        Notification notification = new NotificationCompat.Builder(activity, "channel01")
-                .setSmallIcon(R.drawable.player_music)
-                .setContentTitle(NOME)
-                .setContentText(DESCRICAO)
+        Notification notification = new NotificationCompat.Builder(activity, CHANNEL_2_ID)
+                .setSmallIcon(R.drawable.bt04_a)
+                .setContentTitle(nome)
+                .setContentText(descricao)
                 .setLargeIcon(artwork)
                 .addAction(0, null, null)
                 .addAction(R.drawable.ic_skip_previou, "Previous", PendingIntent.getBroadcast(activity, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT))
@@ -311,15 +327,15 @@ public class NewPlayer extends AppCompatActivity {
         try {
             position++;
             if (position < musicas.size()) {
-                URL = musicas.get(position).getUrlSom();
-                NOME = musicas.get(position).getNome();
-                DESCRICAO = musicas.get(position).getDescricao();
+                url = musicas.get(position).getUrlSom();
+                nome = musicas.get(position).getNome();
+                descricao = musicas.get(position).getDescricao();
                 urlImagem = musicas.get(position).getUrlImagem();
                 duracao = musicas.get(position).getDuration();
             } else {
-                URL = musicas.get(0).getUrlSom();
-                NOME = musicas.get(0).getNome();
-                DESCRICAO = musicas.get(0).getDescricao();
+                url = musicas.get(0).getUrlSom();
+                nome = musicas.get(0).getNome();
+                descricao = musicas.get(0).getDescricao();
                 urlImagem = musicas.get(0).getUrlImagem();
                 duracao = musicas.get(0).getDuration();
                 position = 0;
@@ -327,7 +343,7 @@ public class NewPlayer extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        player(URL, (int) duracao, NOME, DESCRICAO);
+        player(url, (int) duracao, nome, descricao);
         btnPlay.setBackgroundResource(R.drawable.ic_pause_black_24dp);
     }
 
@@ -336,16 +352,16 @@ public class NewPlayer extends AppCompatActivity {
         try {
             position--;
             if (position >= 0) {
-                URL = musicas.get(position).getUrlSom();
-                NOME = musicas.get(position).getNome();
-                DESCRICAO = musicas.get(position).getDescricao();
+                url = musicas.get(position).getUrlSom();
+                nome = musicas.get(position).getNome();
+                descricao = musicas.get(position).getDescricao();
                 urlImagem = musicas.get(position).getUrlImagem();
                 duracao = musicas.get(position).getDuration();
             } else {
                 int i = musicas.size() - 1;
-                URL = musicas.get(i).getUrlSom();
-                NOME = musicas.get(i).getNome();
-                DESCRICAO = musicas.get(i).getDescricao();
+                url = musicas.get(i).getUrlSom();
+                nome = musicas.get(i).getNome();
+                descricao = musicas.get(i).getDescricao();
                 urlImagem = musicas.get(i).getUrlImagem();
                 duracao = musicas.get(i).getDuration();
                 position = i;
@@ -353,7 +369,7 @@ public class NewPlayer extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        player(URL, (int) duracao, NOME, DESCRICAO);
+        player(url, (int) duracao, nome, descricao);
         btnPlay.setBackgroundResource(R.drawable.ic_pause_black_24dp);
     }
 
@@ -391,5 +407,17 @@ public class NewPlayer extends AppCompatActivity {
             voltar();
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            PLAYER.pause();
+            notifyMusic(activity);
+            notificationManager.cancelAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

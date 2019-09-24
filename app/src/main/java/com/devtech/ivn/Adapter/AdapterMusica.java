@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devtech.ivn.Activitys.MusicaAc;
 import com.devtech.ivn.Activitys.NewPlayer;
 
 import com.devtech.ivn.Model.Musica;
@@ -69,6 +71,13 @@ public class AdapterMusica extends RecyclerView.Adapter<AdapterMusica.MyViewHold
                 }
             }
         });
+
+        holder.btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MusicaAc.download(m.getUrlSom(), m.getNome());
+            }
+        });
     }
 
     @Override
@@ -81,6 +90,7 @@ public class AdapterMusica extends RecyclerView.Adapter<AdapterMusica.MyViewHold
         private CardView cvMusica;
         private TextView tvNome;
         private TextView tvDescricao;
+        private ImageView btnDownload;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +98,7 @@ public class AdapterMusica extends RecyclerView.Adapter<AdapterMusica.MyViewHold
             tvNome = itemView.findViewById(R.id.tv_nome_musica);
             tvDescricao = itemView.findViewById(R.id.tv_descricao_musica);
             cvMusica = itemView.findViewById(R.id.cv_musica);
+            btnDownload = itemView.findViewById(R.id.btn_download);
         }
     }
 }

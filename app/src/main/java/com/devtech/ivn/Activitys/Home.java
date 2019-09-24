@@ -64,7 +64,7 @@ public class Home extends AppCompatActivity {
                 public void onClick(View v) {
                     try {
                         Intent it = new Intent(getBaseContext(), Web.class);
-                        it.putExtra("URL", "http://www.ividanova.com.br/");
+                        it.putExtra("url", "http://www.ividanova.com.br/");
                         it.putExtra("titulo", "Vida Nova");
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(it);
@@ -79,7 +79,7 @@ public class Home extends AppCompatActivity {
                 public void onClick(View v) {
                     try {
                         Intent it = new Intent(getBaseContext(), Web.class);
-                        it.putExtra("URL", "http://www.jovensvidanova.com.br/");
+                        it.putExtra("url", "http://www.jovensvidanova.com.br/");
                         it.putExtra("titulo", "Juventude Vida Nova");
                         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(it);
@@ -233,14 +233,14 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(getBaseContext(), Web.class);
-                it.putExtra("URL", "file:///android_asset/politicas.html");
+                it.putExtra("url", "file:///android_asset/politicas.html");
                 it.putExtra("titulo", "Políticas de privacidade");
                 it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(it);
             }
         });
 
-        nome = (String) getIntent().getStringExtra("NOME");
+        nome = (String) getIntent().getStringExtra("nome");
     }
 
     public void getAvisos() {

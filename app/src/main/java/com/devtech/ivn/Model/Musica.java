@@ -10,17 +10,19 @@ public class Musica implements Serializable {
     private String urlSom;
     private String urlImagem;
     private long duration;
+    private String album;
 
     public Musica() {
     }
 
-    public Musica(String id, String nome, String descricao, String urlSom, String urlImagem, long duration) {
+    public Musica(String id, String nome, String descricao, String urlSom, String urlImagem, long duration, String album) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.urlSom = urlSom;
         this.urlImagem = urlImagem;
         this.duration = duration;
+        this.album = album;
     }
 
     public String getId() {
@@ -69,5 +71,13 @@ public class Musica implements Serializable {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 }
